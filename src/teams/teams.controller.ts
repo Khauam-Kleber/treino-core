@@ -22,6 +22,12 @@ export class TeamsController {
     return this.teamsService.findOne(id);
   }
 
+  @Get('againsts/teams') //TODO ajustar para o ingles
+  findAgainstTeams() {
+    //buscar times contra do usuario
+    return this.teamsService.findAgainstTeams();
+  }
+
   @Put(':id')
   update(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {
     return this.teamsService.update(id, updateTeamDto);

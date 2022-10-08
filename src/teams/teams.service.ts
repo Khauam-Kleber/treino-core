@@ -19,11 +19,15 @@ export class TeamsService {
 
 
   async create(createTeamDto: CreateTeamDto) {
+
     let currentUser : User = await this.userService.getRequestUser(); //find current user request
     let newTeam = new this.teamModel(createTeamDto);
-    newTeam.users.push(currentUser);
     newTeam = await newTeam.save();
-    this.userService.updateUserTeam(currentUser, newTeam) //set a team for user
+    if(createTeamDto.teamOwner == null || createTeamDto.teamOwner == undefined){
+      newTeam.users.push(currentUser);
+      newTeam = await newTeam.save(); //TODO verificar meio de otimizar para nao chamar o save 2x
+      this.userService.updateUserTeam(currentUser, newTeam) //set a team for user
+    }
 
     return newTeam;
   }
@@ -34,6 +38,12 @@ export class TeamsService {
 
   findOne(id: string) { //mudado o id para string pois no mongoDb nao é number
     return this.teamModel.findById(id).populate('users')
+  }
+
+  async findAgainstTeams(){
+    let currentUser : User = await this.userService.getRequestUser(); //find current user request
+    let idTeam = currentUser.team._id.toString()
+    return this.teamModel.find({ teamOwner: idTeam }).populate('teamOwner');
   }
 
   update(id: string, updateTeamDto: UpdateTeamDto) {
