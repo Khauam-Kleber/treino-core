@@ -16,6 +16,11 @@ export class Team {
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
   users: User[]
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Team' })
+  teamOwner: Team;
+
+
 }
 
 export const TeamSchema = SchemaFactory.createForClass(Team);

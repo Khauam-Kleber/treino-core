@@ -18,7 +18,7 @@ export class MatchesService {
   }
 
   findAll() {
-    return this.matchModel.find(); //.exec(); 
+    return this.matchModel.find().populate('teamAgainst'); //.exec(); 
   }
 
   findOne(id: string) {
