@@ -11,6 +11,7 @@ import { TeamsModule } from './teams/teams.module';
 import { AuthService } from './auth/auth.service';
 import { LocalStrategy } from './auth/local.strategy';
 import { MatchesModule } from './matches/matches.module';
+import { PerformanceModule } from './performance/performance.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { MatchesModule } from './matches/matches.module';
     }),
     TeamsModule,
     MatchesModule,
+    PerformanceModule,
   ],
   controllers: [AppController],
   providers: [
