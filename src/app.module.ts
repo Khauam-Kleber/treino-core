@@ -10,6 +10,7 @@ import { join } from 'path';
 import { TeamsModule } from './teams/teams.module';
 import { AuthService } from './auth/auth.service';
 import { LocalStrategy } from './auth/local.strategy';
+import { MatchesModule } from './matches/matches.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { LocalStrategy } from './auth/local.strategy';
       rootPath: join(__dirname, '..', 'front'),
     }),
     TeamsModule,
+    MatchesModule,
   ],
   controllers: [AppController],
   providers: [
