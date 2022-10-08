@@ -8,12 +8,14 @@ import { jwtConstants } from './constants';
 import { JwtStrategy } from './jwt.strategy';
 import { TokenModule } from 'src/token/token.module';
 import { TeamsModule } from 'src/teams/teams.module';
+import { MatchesModule } from 'src/matches/matches.module';
 
 @Module({
   imports: [
     PassportModule.register({ session: true }), 
     UsersModule, 
     TeamsModule,
+    MatchesModule,
     TokenModule,
     JwtModule.register({
       secret: jwtConstants.secret,

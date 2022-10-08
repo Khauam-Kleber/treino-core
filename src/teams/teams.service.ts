@@ -32,12 +32,6 @@ export class TeamsService {
     return this.teamModel.find(); //.exec(); 
   }
 
-  findOneByEmail(email: string) {
-    // return this.teamModel.findOne(team => team.email === email); //verificar funcionamento
-    return this.teamModel.findOne({ email: email });
-
-  }
-
   findOne(id: string) { //mudado o id para string pois no mongoDb nao é number
     return this.teamModel.findById(id).populate('users')
   }
