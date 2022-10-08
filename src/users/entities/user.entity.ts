@@ -16,11 +16,14 @@ export class User {
   @Prop({ required: true,  unique: true })
   email: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   password: string;
   
-  @Prop({ type: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' } })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Team' })
   team: Team;
+
+  // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Employee' })
+  // employee: Employee
 
   // @Prop({ required: false })
   // teste: String;

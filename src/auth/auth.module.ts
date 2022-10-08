@@ -11,9 +11,9 @@ import { TeamsModule } from 'src/teams/teams.module';
 
 @Module({
   imports: [
+    PassportModule.register({ session: true }), 
     UsersModule, 
     TeamsModule,
-    PassportModule.register({ session: true }), 
     TokenModule,
     JwtModule.register({
       secret: jwtConstants.secret,

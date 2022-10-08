@@ -39,6 +39,11 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
+  @Get('team-users/:id')
+  findAllByTeamId(@Param('id') teamId: string) {
+    return this.usersService.findAllByTeamId(teamId);
+  }
+
   @Put(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);

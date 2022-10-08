@@ -21,6 +21,7 @@ export class TeamsService {
   async create(createTeamDto: CreateTeamDto) {
     let currentUser : User = await this.userService.getRequestUser(); //find current user request
     let newTeam = new this.teamModel(createTeamDto);
+    newTeam.users.push(currentUser);
     newTeam = await newTeam.save();
     this.userService.updateUserTeam(currentUser, newTeam) //set a team for user
 
@@ -38,7 +39,7 @@ export class TeamsService {
   }
 
   findOne(id: string) { //mudado o id para string pois no mongoDb nao é number
-    return this.teamModel.findById(id);
+    return this.teamModel.findById(id).populate('users')
   }
 
   update(id: string, updateTeamDto: UpdateTeamDto) {

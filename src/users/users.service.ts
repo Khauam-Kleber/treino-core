@@ -9,53 +9,65 @@ import { Team } from 'src/teams/entities/team.entity';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 
+@Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>, @Inject(REQUEST) private readonly request: Request,
-  ) 
-  {}
+  ) { }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<User> {
+
     let userExist = await this.findOneByEmail(createUserDto.email)
-    if(userExist){
+    if (userExist) {
       throw new HttpException({
         errorMessage: 'Email Já Cadastrado'
       }, HttpStatus.FORBIDDEN)
     }
 
-    const user = new this.userModel(createUserDto);
-    user.password = bcrypt.hashSync(createUserDto.password, 8);
-    return user.save();
+    if (!createUserDto.email) {
+      createUserDto.email = createUserDto.name + "@treino.com";
+    }
+
+    if (createUserDto.password) {
+      createUserDto.password = bcrypt.hashSync(createUserDto.password, 8);
+    }
+
+    let user = await new this.userModel(createUserDto).save(); //TODO por algum motivo não volta id ao salvar... ajustar
+    return this.findOneByEmail(user.email);
   }
 
-  findAll(){
+  findAll() {
     return this.userModel.find().populate('team'); //.exec(); 
   }
 
-  findOneByEmail(email: string){
-   // return this.userModel.findOne(user => user.email === email); //verificar funcionamento
-    return this.userModel.findOne({email : email});
+  findOneByEmail(email: string) {
+    // return this.userModel.findOne(user => user.email === email); //verificar funcionamento
+    return this.userModel.findOne({ email: email });
 
   }
 
-  findOne(id: string){ //mudado o id para string pois no mongoDb nao é number
+  findOne(id: string) { //mudado o id para string pois no mongoDb nao é number
     return this.userModel.findById(id);
+  }
+
+  findAllByTeamId(teamId: string) {
+    return this.userModel.find({ team: teamId }).populate('team');
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
     updateUserDto.password = bcrypt.hashSync(updateUserDto.password, 8); // verificar se senha mudou pra nao encrip 2x a mesma senha
-    return this.userModel.findByIdAndUpdate(id, updateUserDto, {new: true});
+    return this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
   }
 
-  async updateUserTeam(user: User, team: Team){
-    return await this.userModel.findByIdAndUpdate({_id: user._id}, { $set: { team: team._id }}, {new: true});
+  async updateUserTeam(user: User, team: Team) {
+    return await this.userModel.findByIdAndUpdate({ _id: user._id }, { $set: { team: team._id } }, { new: true });
   }
 
   remove(id: string) {
-    return this.userModel.deleteOne({_id: id}).exec();
+    return this.userModel.deleteOne({ _id: id }).exec();
   }
 
-  
-  getRequestUser(){
+
+  getRequestUser() {
     return this.findOneByEmail(this.request.user['email']);
   }
 
