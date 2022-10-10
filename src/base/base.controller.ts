@@ -8,6 +8,7 @@ export class BaseController<T extends BaseEntity> {
   
   @Get()
   async getAll(@Res() res) {
+      console.log("AQUi")
       const entities = await this.baseService.findAll();
       return res.status(HttpStatus.OK).json(entities);
   }
@@ -23,12 +24,13 @@ export class BaseController<T extends BaseEntity> {
   }
 
   @Post()
-  async add(@Res() res, @Body() t: T) {
-      const updatedEntity = await this.baseService.create(t);
-      return res.status(HttpStatus.OK).json({
-          message: 'Entity has been created successfully',
-          updatedEntity
-      });
+   create(@Body() t: T) {
+      delete t._id;
+      return this.baseService.create(t);
+      // return res.status(HttpStatus.OK).json({
+      //     message: 'Entity has been created successfully',
+      //     updatedEntity
+      // });
   }
 
   @Put(':id')
@@ -37,10 +39,7 @@ export class BaseController<T extends BaseEntity> {
       if (!entity) {
         throw new NotFoundException('Entity does not exist!');
       } 
-      return res.status(HttpStatus.OK).json({
-          message: 'Entity has been successfully updated',
-          entity
-      });
+      return entity;
   }
 
   @Delete(':id')
@@ -49,9 +48,6 @@ export class BaseController<T extends BaseEntity> {
       if (!entity) {
         throw new NotFoundException('Entity does not exist');
       }
-      return res.status(HttpStatus.OK).json({
-          message: 'Entity has been deleted',
-          entity
-      })
+      return entity
   }
 }

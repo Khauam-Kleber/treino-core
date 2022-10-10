@@ -8,7 +8,7 @@ import { Team, TeamDocument } from './entities/team.entity';
 
 
 @Injectable()
-export class TeamsService  extends BaseService<Team> {
+export class TeamsService extends BaseService<Team> {
   constructor(
     @InjectModel(Team.name) private teamModel: Model<TeamDocument>,
     private userService: UsersService
@@ -17,11 +17,11 @@ export class TeamsService  extends BaseService<Team> {
   }
 
   async create(createTeamDto: Team) {
-
-    let currentUser : User = await this.userService.getRequestUser(); //find current user request
-    let newTeam = new this.teamModel(createTeamDto);
-    newTeam = await newTeam.save();
+  
+    let newTeam = await new this.teamModel(createTeamDto).save({validateBeforeSave: true})
+    console.log(newTeam)
     if(createTeamDto.teamOwner == null || createTeamDto.teamOwner == undefined){
+      let currentUser : User = await this.userService.getRequestUser(); //find current user request
       newTeam.users.push(currentUser);
       newTeam = await newTeam.save(); //TODO verificar meio de otimizar para nao chamar o save 2x
       this.userService.updateUserTeam(currentUser, newTeam) //set a team for user
