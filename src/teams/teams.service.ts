@@ -19,7 +19,6 @@ export class TeamsService extends BaseService<Team> {
   async create(createTeamDto: Team) {
   
     let newTeam = await new this.teamModel(createTeamDto).save({validateBeforeSave: true})
-    console.log(newTeam)
     if(createTeamDto.teamOwner == null || createTeamDto.teamOwner == undefined){
       let currentUser : User = await this.userService.getRequestUser(); //find current user request
       newTeam.users.push(currentUser);

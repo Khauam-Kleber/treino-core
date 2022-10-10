@@ -3,6 +3,7 @@ import mongoose, { Document, ObjectId, SchemaTypes, Types } from 'mongoose';
 import { Transform, Type } from 'class-transformer';
 import { User } from 'src/users/entities/user.entity';
 import { Match } from 'src/matches/entities/match.entity';
+import { BaseEntity } from 'src/base/base.entity';
 
 export type PerformanceDocument = Performance & Document;
 
@@ -33,8 +34,12 @@ export class Performance {
 
 export const PerformanceSchema = SchemaFactory.createForClass(Performance);
 
-//jogador
-//nota 1-10
-//kills
-//assistencias
-//mortes
+export interface Performance extends BaseEntity {
+  _id: ObjectId;
+  player: User;
+  rating: number;
+  kills: number;
+  assists: number;
+  deaths: number;
+  match: Match;
+}

@@ -8,7 +8,6 @@ export class BaseController<T extends BaseEntity> {
   
   @Get()
   async getAll(@Res() res) {
-      console.log("AQUi")
       const entities = await this.baseService.findAll();
       return res.status(HttpStatus.OK).json(entities);
   }
