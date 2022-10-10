@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PerformanceService } from './performance.service';
 import { CreatePerformanceDto } from './dto/create-performance.dto';
 import { UpdatePerformanceDto } from './dto/update-performance.dto';
+import { Put } from '@nestjs/common/decorators';
 
 @Controller('performance')
 export class PerformanceController {
@@ -19,16 +20,16 @@ export class PerformanceController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.performanceService.findOne(+id);
+    return this.performanceService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updatePerformanceDto: UpdatePerformanceDto) {
-    return this.performanceService.update(+id, updatePerformanceDto);
+    return this.performanceService.update(id, updatePerformanceDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.performanceService.remove(+id);
+    return this.performanceService.remove(id);
   }
 }

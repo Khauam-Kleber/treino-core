@@ -21,22 +21,6 @@ export class User {
   
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Team' })
   team: Team;
-
-  // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Employee' })
-  // employee: Employee
-
-  // @Prop({ required: false })
-  // teste: String;
-
-  // @Prop({ type: SchemaTypes.ObjectId, ref: 'Team', required: false })
-  // team: Types.ObjectId;
-
-  // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Team.name })
-  // @Type(() => Team)
-  // team: Team;
-
-
-
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

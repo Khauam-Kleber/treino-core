@@ -9,6 +9,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { TokenModule } from 'src/token/token.module';
 import { TeamsModule } from 'src/teams/teams.module';
 import { MatchesModule } from 'src/matches/matches.module';
+import { PerformanceModule } from 'src/performance/performance.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { MatchesModule } from 'src/matches/matches.module';
     UsersModule, 
     TeamsModule,
     MatchesModule,
+    PerformanceModule,
     TokenModule,
     JwtModule.register({
       secret: jwtConstants.secret,

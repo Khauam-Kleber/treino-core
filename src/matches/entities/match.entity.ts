@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, ObjectId } from 'mongoose';
 import { Transform, Type } from 'class-transformer';
 import { Team } from 'src/teams/entities/team.entity';
+import { BaseEntity } from 'src/base/base.entity';
 
 export type MatchDocument = Match & Document;
 
@@ -28,6 +29,19 @@ export class Match {
   @Prop()
   learnings: string;
 
+  //colocar data fixa ou dinamica para utilizar nos filtros depois
+
 }
 
 export const MatchSchema = SchemaFactory.createForClass(Match);
+
+
+export interface Match extends BaseEntity {
+  _id: ObjectId;
+  teamHome: Team;
+  scoreboardTeamHome: number;
+  scoreboardTeamAgainst: number;
+  teamAgainst: Team;
+  roundsToObserve: string;
+  learnings: string;
+}
