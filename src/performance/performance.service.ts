@@ -16,9 +16,9 @@ export class PerformanceService extends BaseService<Performance>{
   //   return newPerformance;
   // }
 
-  // findAll() {
-  //   return this.performaceModel.find(); //.exec(); 
-  // }
+  findAllByMatch(matchId) {
+    return this.performaceModel.find({match: matchId}); //.exec(); 
+  }
 
   // findOne(id: string) {
   //   return this.performaceModel.findById(id);

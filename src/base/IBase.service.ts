@@ -1,4 +1,5 @@
 export interface IBaseService<T> {
+ 
     
   findAll();
   findOne(id: string);

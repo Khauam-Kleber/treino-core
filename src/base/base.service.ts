@@ -30,10 +30,9 @@ export class BaseService<T extends BaseEntity> implements IBaseService<T> {
 		return updatedCustomer;
 	}
 
-	async delete(id: string) {
+	async delete(id) {
 		try {
-			const deletedCustomer = await this.baseModule.findByIdAndRemove(id);
-			return deletedCustomer;
+			return this.baseModule.deleteOne({ _id: id }).exec();
 		} catch (error) {
 			throw new BadGatewayException(error);
 		}
