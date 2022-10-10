@@ -14,7 +14,7 @@ export class BaseController<T extends BaseEntity> {
 
   @Get(':id')
   async getCustomer(@Res() res, @Param('id') id) {
-      const entity = await this.baseService.get(id);
+      const entity = await this.baseService.findOne(id);
       if (!entity){
         throw new NotFoundException('Entity does not exist!');
       }

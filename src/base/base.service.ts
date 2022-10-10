@@ -16,7 +16,7 @@ export class BaseService<T extends BaseEntity> implements IBaseService<T> {
 		}
 	}
 
-	async get(id: number): Promise<T> {
+	async findOne(id: string): Promise<T> {
 		try {
 			const customer = await this.baseModule.findById(id).exec();
 			return customer;
@@ -30,7 +30,7 @@ export class BaseService<T extends BaseEntity> implements IBaseService<T> {
 		return updatedCustomer;
 	}
 
-	async delete(id: number) {
+	async delete(id: string) {
 		try {
 			const deletedCustomer = await this.baseModule.findByIdAndRemove(id);
 			return deletedCustomer;

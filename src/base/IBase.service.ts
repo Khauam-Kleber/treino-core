@@ -1,8 +1,8 @@
 export interface IBaseService<T> {
     
   findAll();
-  get(id: number);
+  findOne(id: string);
   update(entity: T);
   create(entity: T);
-  delete(id: number);
+  delete(id: string);
 }
