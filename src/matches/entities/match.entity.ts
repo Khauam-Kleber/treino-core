@@ -29,7 +29,11 @@ export class Match {
   @Prop()
   learnings: string;
 
+  @Prop()
+  date: Date;
+
   //colocar data fixa ou dinamica para utilizar nos filtros depois
+  //seria bom colocar um status -> AVALIAR, AVALIADO...
 
 }
 
@@ -44,4 +48,5 @@ export interface Match extends BaseEntity {
   teamAgainst: Team;
   roundsToObserve: string;
   learnings: string;
+  date: Date;
 }

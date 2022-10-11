@@ -15,4 +15,19 @@ export class MatchesService  extends BaseService<Match>{
   async findAll() {
     return this.matchModel.find().populate('teamAgainst'); //.exec(); 
   }
+
+  async findDashboardInfos(){
+    let infoList = []
+    infoList.push({"value" : await this.countAllWinMatches(), name: "Partidas Ganhas"})
+    infoList.push({"value" : await this.countAllLoseMatches(), name: "Partidas Perdidas" })
+    return infoList;
+  }
+
+  async countAllWinMatches() {
+    return this.matchModel.count({ $expr: { $gt: [ "$scoreboardTeamHome" , "$scoreboardTeamAgainst" ] }});
+  }
+
+  async countAllLoseMatches() {
+    return this.matchModel.count({ $expr: { $lt: [ "$scoreboardTeamHome" , "$scoreboardTeamAgainst" ] }});
+  }
 }
