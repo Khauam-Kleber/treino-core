@@ -40,12 +40,7 @@ export class UsersService extends BaseService<User> {
   findOneByEmail(email: string) {
     // return this.userModel.findOne(user => user.email === email); //verificar funcionamento
     return this.userModel.findOne({ email: email });
-
   }
-
-  // findOne(id: string) { //mudado o id para string pois no mongoDb nao é number
-  //   return this.userModel.findById(id);
-  // }
 
   findAllByTeamId(teamId: string) {
     return this.userModel.find({ team: teamId }).populate('team');
@@ -59,11 +54,6 @@ export class UsersService extends BaseService<User> {
   async updateUserTeam(user: User, team: Team) {
     return await this.userModel.findByIdAndUpdate({ _id: user._id }, { $set: { team: team._id } }, { new: true });
   }
-
-  // remove(id: string) {
-  //   return this.userModel.deleteOne({ _id: id }).exec();
-  // }
-
 
   getRequestUser() {
     return this.findOneByEmail(this.request.user['email']);
