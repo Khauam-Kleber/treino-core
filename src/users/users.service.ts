@@ -7,10 +7,15 @@ import { Team } from 'src/teams/entities/team.entity';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { BaseService } from 'src/base/base.service';
+import { BadGatewayException } from '@nestjs/common/exceptions';
+import { PerformanceService } from 'src/performance/performance.service';
 
 @Injectable()
 export class UsersService extends BaseService<User> {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>, @Inject(REQUEST) private readonly request: Request,
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @Inject(REQUEST) private readonly request: Request,
+    private performaceService: PerformanceService
   ) { super(userModel); }
 
   async create(createUserDto: User): Promise<User> {
@@ -58,5 +63,19 @@ export class UsersService extends BaseService<User> {
   getRequestUser() {
     return this.findOneByEmail(this.request.user['email']);
   }
+
+
+  async delete(id) {
+		try {
+      if((await this.performaceService.verifyIfUserContainsPerformaces(id)).length > 0){
+        throw new BadGatewayException("Usuário possui partidas cadastradas e não pode ser removido");
+      }
+
+
+			return this.userModel.deleteOne({ _id: id }).exec();
+		} catch (error) {
+			throw new BadGatewayException(error);
+		}
+	}
 
 }
