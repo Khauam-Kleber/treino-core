@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadGatewayException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { BaseService } from 'src/base/base.service';
@@ -14,9 +14,25 @@ export class MatchesService extends BaseService<Match>{
   }
 
   async findAll() {
+    throw new BadGatewayException("Não dispnivel");
+    return [];
+  }
+
+  async findMatchesPagination(params) {
+    let pageNumber = params.page;
+    let limit = params.size;
+    // const query = { $text: { $search: params.term } };
+    // if(params.term === ''){
+    //   return this.userModel.find().sort({'price.7_days.sold':-1}).collation({locale:"en_US", numericOrdering:true}).skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * limit ) : 0 ).limit(limit);
+    // }else{
+    //   return this.userModel.find(query).sort({'price.7_days.sold':-1}).collation({locale:"en_US", numericOrdering:true}).skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * limit ) : 0 ).limit(limit);
+    // }
+
     let user = await this.usersService.getRequestUser();
     if (user.team) {
-      return this.matchModel.find({ teamHome: user.team._id.toString() }).populate('teamAgainst'); //.exec(); 
+      const data = await this.matchModel.find({ teamHome: user.team._id.toString() }).populate('teamAgainst').skip(pageNumber > 0 ? ((pageNumber - 1) * limit) : 0).limit(limit);
+      const count = await this.matchModel.count({ teamHome: user.team._id.toString() });
+      return { data, count };
     } else {
       return [];
     }
