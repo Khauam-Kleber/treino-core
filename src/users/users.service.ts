@@ -28,7 +28,8 @@ export class UsersService extends BaseService<User> {
     }
 
     if (!createUserDto.email) {
-      createUserDto.email = createUserDto.name + "@treino.com";
+      let time = new Date().getTime()
+      createUserDto.email = createUserDto.name + "@" + time.toString() + ".com";
     }
 
     if (createUserDto.password) {
